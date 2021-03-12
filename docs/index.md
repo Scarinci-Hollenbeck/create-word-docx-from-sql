@@ -1,0 +1,1 @@
+Dynamically created blog word docs will go in this file
