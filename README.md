@@ -1,1 +1,1 @@
-# Convert Wordpress wp_posts to Word Documents
+# Convert Wordpress Blog Posts to Word Documents
