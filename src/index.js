@@ -21,7 +21,7 @@ connection.connect((err) => {
   console.log(`connected as id ${connection.threadId}`);
 });
 
-connection.query('SELECT post_title, post_date, post_author, post_content FROM wp_posts WHERE post_date < "2015-01-01" ORDER BY post_date DESC LIMIT 3', (error, results, fields) => {
+connection.query('SELECT post_title, post_date, post_author, post_content FROM wp_posts WHERE post_date < "2015-01-01" ORDER BY post_date DESC LIMIT 3', (error, results) => {
   if (error) throw error;
 
   // post_author only gets an id
@@ -38,7 +38,7 @@ connection.query('SELECT post_title, post_date, post_author, post_content FROM w
       content: post_content,
     });
 
-    return formatPostToDoc(post);
+    return formatPostToDoc(queryToPost);
   });
 
   // use mysql to query the database

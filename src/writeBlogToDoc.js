@@ -1,5 +1,6 @@
 const docx = require('docx');
 const fs = require('fs');
+const createDocTitle = require('./docTitle');
 
 const convertPostToDoc = async (post) => {
   const doc = new docx.Document();
@@ -7,7 +8,7 @@ const convertPostToDoc = async (post) => {
   await doc.addSection(post);
 
   return docx.Packer.toBuffer(doc).then(async (buffer) => {
-    const postTitle =  await createDocTitle(post.title);
+    const postTitle = await createDocTitle(post.title);
 
     fs.writeFileSync(`../docs/${postTitle}.docx`, buffer);
   });
