@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 require('dotenv').config();
 const mysql = require('mysql');
-// const Post = require('./Post');
-// const convertPostToDoc = require('./conversion');
+const Post = require('./Post');
+const formatPostToDoc = require('./formatPostToDoc');
 
 // store posts in mysql database
 const connection = mysql.createConnection({
@@ -30,12 +30,15 @@ connection.query('SELECT post_title, post_date, post_author, post_content FROM w
     const {
       post_title, post_date, post_author, post_content,
     } = post;
-    console.log({
+
+    const queryToPost = new Post({
       title: post_title,
       date: post_date,
       author: post_author,
       content: post_content,
     });
+
+    return formatPostToDoc(post);
   });
 
   // use mysql to query the database

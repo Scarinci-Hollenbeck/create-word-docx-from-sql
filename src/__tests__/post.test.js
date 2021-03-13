@@ -35,4 +35,8 @@ describe('Post', () => {
   it('newPost.title should equal Temp Post title', () => {
     expect(newPost.title).to.equal('Temp Post title');
   });
+
+  it('newPost should be an object', () => {
+    expect(typeof newPost).to.equal('object');
+  });
 });
