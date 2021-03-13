@@ -26,6 +26,7 @@ connection.query('SELECT post_title, post_date, post_author, post_content FROM w
 
   // post_author only gets an id
   // so we need to upload author posts too
+  // we also need to get post_thumbnail data too
   results.forEach((post) => {
     const {
       post_title, post_date, post_author, post_content,
