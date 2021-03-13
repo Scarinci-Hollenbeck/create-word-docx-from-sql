@@ -38,7 +38,7 @@ connection.query('SELECT post_title, post_date, post_author, post_content FROM w
       content: post_content,
     });
 
-    return formatPostToDoc(queryToPost);
+    return formatPostToDoc(queryToPost, post_title);
   });
 
   // use mysql to query the database
