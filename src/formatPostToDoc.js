@@ -1,8 +1,6 @@
 const convertPostToDoc = require('./writeBlogToDoc');
 
-const formatPostToDoc = (post) => {
-    // run through all the formatting from docx npm
-    return convertPostToDoc(post);
-};
+// run through all the formatting from docx npm
+const formatPostToDoc = (post) => convertPostToDoc(post);
 
 module.exports = formatPostToDoc;
