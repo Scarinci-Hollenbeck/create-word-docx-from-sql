@@ -2,7 +2,8 @@
 require('dotenv').config();
 const mysql = require('mysql');
 const Post = require('./Post');
-const formatPostToDoc = require('./formatPostToDoc');
+const { extractSubTitle } = require('./utils');
+const { formatPostToDoc } = require('./formatPostToDoc');
 
 // store posts in mysql database
 const connection = mysql.createConnection({
@@ -21,31 +22,67 @@ connection.connect((err) => {
   console.log(`connected as id ${connection.threadId}`);
 });
 
-connection.query('SELECT post_title, post_date, post_author, post_content FROM wp_posts WHERE post_date < "2015-01-01" ORDER BY post_date DESC LIMIT 3', (error, results) => {
-  if (error) throw error;
+const query = `SELECT DISTINCT
+p.ID AS id,
+p.post_title AS title,
+p.post_date AS date,
+p.post_content AS content,
+(
+  SELECT group_concat(t.name SEPARATOR ', ')
+  FROM wp_terms t
+  LEFT JOIN wp_term_taxonomy tt ON t.term_id = tt.term_id
+  LEFT JOIN wp_term_relationships tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
+  WHERE tt.taxonomy = 'category' AND p.ID = tr.object_id
+) AS category,
+(
+SELECT display_name
+  FROM wp_users
+  RIGHT JOIN wp_posts ON p.post_author = wp_users.ID
+  LIMIT 1
+) AS author,
+(
+SELECT meta_value
+  FROM wp_postmeta m
+  RIGHT JOIN wp_posts ON p.ID = m.post_id
+  WHERE m.meta_key='_yoast_wpseo_metadesc'
+  LIMIT 1
+) AS meta_description
+FROM wp_posts p
+WHERE p.post_type = 'post'
+AND p.post_status = 'publish'
+AND p.post_date < "2015-01-01"
+LIMIT 10;
+`;
 
-  // post_author only gets an id
-  // so we need to upload author posts too
-  // we also need to get post_thumbnail data too
-  results.forEach((post) => {
-    const {
-      post_title, post_date, post_author, post_content,
-    } = post;
+// describe
+connection.query(query, (err, data) => {
+  if (err) {
+    console.error(err);
+  }
 
-    const queryToPost = new Post({
-      title: post_title,
-      date: post_date,
-      author: post_author,
-      content: post_content,
-    });
+  // iterater through query results
+  data.forEach((post) => {
+    // extract subtitle from post content
+    let subTitle = '';
+    const postToDomElm = extractSubTitle(post.content);
 
-    return formatPostToDoc(queryToPost, post_title);
+    if (postToDomElm) {
+      subTitle += postToDomElm.innerHTML;
+    }
+
+    const postObj = new Post(
+      post.title,
+      subTitle,
+      post.content,
+      post.meta_description,
+      post.date,
+      post.author,
+      post.category,
+    );
+
+    // now we need to pass the postObj to the Word Doc format function
+    formatPostToDoc(postObj);
   });
-
-  // use mysql to query the database
-  // then we convert the results into new Post objects
-
-// then we convert each Post object to new a word document
 });
 
 connection.end();

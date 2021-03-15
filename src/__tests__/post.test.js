@@ -7,8 +7,6 @@ describe('Post', () => {
     title: 'Temp Post title',
     subTitle: 'Temp Post sub title',
     body: 'Temp post post body content',
-    featuredImage: './featuredImage.png',
-    bodyImage: './bodyImage.png',
     metaDescription: 'Temp post meta description',
     metaTitle: 'Temp post meta title',
     date: 'January 2, 2021',
@@ -19,17 +17,14 @@ describe('Post', () => {
     dummiePost.title,
     dummiePost.subTitle,
     dummiePost.body,
-    dummiePost.featuredImage,
-    dummiePost.bodyImage,
     dummiePost.metaDescription,
-    dummiePost.metaTitle,
     dummiePost.date,
     dummiePost.author,
     dummiePost.categories,
   );
 
   it('should create a new post', () => {
-    expect(Object.keys(newPost).length).to.equal(10);
+    expect(Object.keys(newPost).length).to.equal(7);
   });
 
   it('newPost.title should equal Temp Post title', () => {
