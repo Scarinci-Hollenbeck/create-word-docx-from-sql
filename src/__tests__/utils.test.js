@@ -1,18 +1,23 @@
-const { describe, it } = require('mocha');
+// const describe = require('mocha').describe();
+// const it = require('mocha').it();
 const { expect } = require('chai');
+
 const {
   createDocTitle,
   extractSubTitle,
   createArrofParagraphs,
+  formatDate
 } = require('../utils');
 
 // tests for createDocTitle util function
 describe('Blog Post Title to Word Doc Title', () => {
   it('changes Blog Post Test to blog-post-test', () => {
     const title = 'Blog Post Test';
-    const modTitle = createDocTitle(title, '01-01-2021');
+    const dateExample = '2011-11-02T17:13:02.000Z';
+    const dateObj = new Date(dateExample);
+    const modTitle = createDocTitle(title, dateObj);
 
-    expect(modTitle).to.equal('blog-post-test-01-01-2021');
+    expect(modTitle).to.equal('blog-post-test-10-3-2011');
   });
 });
 
@@ -46,5 +51,17 @@ describe('should return an array from a string of p tags', () => {
   it('the type of strToArr should be an array', () => {
     const strToArr = createArrofParagraphs(testPTags);
     expect(typeof strToArr).to.equal('object');
+  });
+});
+
+// format date utility
+describe('format date utlity function', () => {
+  it('check if date obj returns date in 01-01-2021', () => {
+    const dateExample = '2011-11-02T17:13:02.000Z';
+    const dateObj = new Date(dateExample);
+    const fDate = formatDate(dateObj);
+    console.log(fDate);
+
+    expect(fDate).to.equal('10-3-2011');
   });
 });

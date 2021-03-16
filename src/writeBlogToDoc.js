@@ -1,11 +1,11 @@
 const docx = require('docx');
 const fs = require('fs');
-const createDocTitle = require('./utils');
+const { createDocTitle } = require('./utils');
 
-const convertPostToDoc = async (post, title, date) => {
+const convertPostToDoc = async (formatedPostObj, title, date) => {
   const doc = new docx.Document();
 
-  await doc.addSection(post);
+  await doc.addSection(formatedPostObj);
 
   return docx.Packer.toBuffer(doc).then(async (buffer) => {
     const postTitle = await createDocTitle(title, date);

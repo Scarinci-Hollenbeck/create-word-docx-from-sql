@@ -9,8 +9,14 @@ const extractSubTitle = (body) => {
   return doc.window.document.querySelector('h2');
 };
 
+const formatDate = (date) => {
+  const dateObj = new Date(date);
+
+  return `${dateObj.getMonth()}-${dateObj.getDay()}-${dateObj.getFullYear()}`;
+};
+
 // create a doc file title
-const createDocTitle = (post, date) => `${post.replace(/\s+/g, '-').toLowerCase()}-${date}`;
+const createDocTitle = (post, date) => `${post.replace(/\s+/g, '-').toLowerCase()}-${formatDate(date)}`;
 
 // create an array of paragraphs based on string
 const createArrofParagraphs = (body) => {
@@ -24,4 +30,5 @@ module.exports = {
   createDocTitle,
   extractSubTitle,
   createArrofParagraphs,
+  formatDate,
 };

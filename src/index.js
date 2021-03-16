@@ -51,7 +51,7 @@ FROM wp_posts p
 WHERE p.post_type = 'post'
 AND p.post_status = 'publish'
 AND p.post_date < "2015-01-01" 
-LIMIT 10;
+LIMIT 1;
 `;
 
 // describe

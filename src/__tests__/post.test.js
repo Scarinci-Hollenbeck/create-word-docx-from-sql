@@ -1,5 +1,7 @@
-const { describe, it } = require('mocha');
-const { expect } = require('chai');
+// const describe = require('mocha').describe();
+// const it = require('mocha').it();
+const expect = require('chai').expect();
+
 const Post = require('../Post');
 
 describe('Post', () => {
