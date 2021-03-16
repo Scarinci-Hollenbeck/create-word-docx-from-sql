@@ -50,8 +50,9 @@ SELECT meta_value
 FROM wp_posts p
 WHERE p.post_type = 'post'
 AND p.post_status = 'publish'
-AND p.post_date < "2015-01-01" 
-LIMIT 100;
+AND p.post_date > "2011-01-01"
+AND p.post_date < "2012-01-01"
+LIMIT 5 
 `;
 
 // describe

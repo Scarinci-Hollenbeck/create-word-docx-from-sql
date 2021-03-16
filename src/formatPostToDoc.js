@@ -4,7 +4,7 @@ const { formatDate } = require('./utils');
 
 const formatPostToDoc = (post) => {
   try {
-    const content = post.body.map((paragraph) => new Paragraph({ text: paragraph }));
+    const content = post.body.map((paragraph) => new Paragraph({ text: paragraph || '' }));
 
     const formatedPostObj = {
       properties: {},
@@ -15,7 +15,7 @@ const formatPostToDoc = (post) => {
               text: 'Title: ',
               bold: true,
             }),
-            new TextRun(post.title),
+            new TextRun(post.title || ''),
           ],
         }),
         new Paragraph({
@@ -24,7 +24,7 @@ const formatPostToDoc = (post) => {
               text: 'Subtitle: ',
               bold: true,
             }),
-            new TextRun(post.subTitle),
+            new TextRun(post.subTitle || ''),
           ],
         }),
         new Paragraph({
@@ -33,7 +33,7 @@ const formatPostToDoc = (post) => {
               text: 'Meta Description: ',
               bold: true,
             }),
-            new TextRun(post.metaDescription),
+            new TextRun(post.metaDescription || ''),
           ],
         }),
         new Paragraph({
@@ -42,7 +42,16 @@ const formatPostToDoc = (post) => {
               text: 'Date: ',
               bold: true,
             }),
-            new TextRun(formatDate(post.date)),
+            new TextRun(formatDate(post.date) || ''),
+          ],
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Categories: ',
+              bold: true,
+            }),
+            new TextRun(post.categories || ''),
           ],
         }),
         new Paragraph({
@@ -51,7 +60,7 @@ const formatPostToDoc = (post) => {
               text: 'Author: ',
               bold: true,
             }),
-            new TextRun(post.author),
+            new TextRun(post.author || ''),
           ],
         }),
         new Paragraph({
@@ -69,7 +78,7 @@ const formatPostToDoc = (post) => {
               text: 'Raw Content: ',
               bold: true,
             }),
-            new TextRun(post.additionalData),
+            new TextRun(post.additionalData || ''),
           ],
         }),
       ],
