@@ -51,39 +51,42 @@ FROM wp_posts p
 WHERE p.post_type = 'post'
 AND p.post_status = 'publish'
 AND p.post_date < "2015-01-01" 
-LIMIT 1;
+LIMIT 100;
 `;
 
 // describe
-connection.query(query, (err, data) => {
-  if (err) {
-    console.error(err);
-  }
-
-  // iterater through query results
-  data.forEach((post) => {
+connection.query(query, (error, data) => {
+  try {
+    // iterater through query results
+    data.forEach((post) => {
     // extract subtitle from post content
-    let subTitle = '';
-    const postToDomElm = extractSubTitle(post.content);
-    const body = createArrofParagraphs(post.content);
+      let subTitle = '';
+      const postToDomElm = extractSubTitle(post.content);
+      const body = createArrofParagraphs(post.content);
 
-    if (postToDomElm) {
-      subTitle += postToDomElm.innerHTML;
-    }
+      if (postToDomElm) {
+        subTitle += postToDomElm.innerHTML;
+      }
 
-    const postObj = new Post(
-      post.title,
-      subTitle,
-      body,
-      post.meta_description,
-      post.date,
-      post.author,
-      post.category,
-    );
+      const postObj = new Post(
+        post.title,
+        subTitle,
+        body,
+        post.meta_description,
+        post.date,
+        post.author,
+        post.category,
+        post.content,
+      );
 
-    // now we need to pass the postObj to the Word Doc format function
-    formatPostToDoc(postObj);
-  });
+      // now we need to pass the postObj to the Word Doc format function
+      formatPostToDoc(postObj);
+    });
+    return true;
+  } catch (err) {
+    console.error(error);
+    return new Error(err);
+  }
 });
 
 connection.end();

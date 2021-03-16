@@ -3,15 +3,21 @@ const fs = require('fs');
 const { createDocTitle } = require('./utils');
 
 const convertPostToDoc = async (formatedPostObj, title, date) => {
-  const doc = new docx.Document();
+  try {
+    const doc = new docx.Document();
 
-  await doc.addSection(formatedPostObj);
+    await doc.addSection(formatedPostObj);
 
-  return docx.Packer.toBuffer(doc).then(async (buffer) => {
-    const postTitle = await createDocTitle(title, date);
+    return docx.Packer.toBuffer(doc).then(async (buffer) => {
+      const postTitle = await createDocTitle(title, date);
 
-    fs.writeFileSync(`../docs/${postTitle}.docx`, buffer);
-  });
+      fs.writeFileSync(`docs/${postTitle}.docx`, buffer);
+    });
+  } catch (err) {
+    console.log(new Error(err));
+  }
+
+  return true;
 };
 
 module.exports = convertPostToDoc;

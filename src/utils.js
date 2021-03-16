@@ -16,14 +16,14 @@ const formatDate = (date) => {
 };
 
 // create a doc file title
-const createDocTitle = (post, date) => `${post.replace(/\s+/g, '-').toLowerCase()}-${formatDate(date)}`;
+const createDocTitle = (post, date) => `${post.replace(/[^\w\s]/gi, '').replace(/\s+/g, '-').toLowerCase()}-${formatDate(date)}`;
 
 // create an array of paragraphs based on string
 const createArrofParagraphs = (body) => {
   const doc = new JSDOM(body);
   const allPTags = doc.window.document.querySelectorAll('p');
 
-  return Array.from(allPTags).map((item) => item.innerHTML);
+  return Array.from(allPTags).map((item) => item.textContent);
 };
 
 module.exports = {
