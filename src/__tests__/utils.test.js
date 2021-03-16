@@ -3,6 +3,7 @@ const { expect } = require('chai');
 const {
   createDocTitle,
   extractSubTitle,
+  createArrofParagraphs,
 } = require('../utils');
 
 // tests for createDocTitle util function
@@ -30,5 +31,20 @@ describe('Extract text between h2 tags', () => {
 
     expect(secondStrToDomElm).to.equal(null);
     expect(strToDomElm.textContent).to.equal('Hello I am the subtitle from this post');
+  });
+});
+
+// check if p tags are split into an array
+describe('should return an array from a string of p tags', () => {
+  const testPTags = '<p>Test one...</p><p>Test two...</p><p>Test three...</p>';
+  it('there should be an array of 3 p tags', () => {
+    const strToArr = createArrofParagraphs(testPTags);
+
+    expect(strToArr.length).to.equal(3);
+  });
+
+  it('the type of strToArr should be an array', () => {
+    const strToArr = createArrofParagraphs(testPTags);
+    expect(typeof strToArr).to.equal('object');
   });
 });

@@ -2,8 +2,8 @@
 require('dotenv').config();
 const mysql = require('mysql');
 const Post = require('./Post');
-const { extractSubTitle } = require('./utils');
-const { formatPostToDoc } = require('./formatPostToDoc');
+const { extractSubTitle, createArrofParagraphs } = require('./utils');
+const formatPostToDoc = require('./formatPostToDoc');
 
 // store posts in mysql database
 const connection = mysql.createConnection({
@@ -50,7 +50,7 @@ SELECT meta_value
 FROM wp_posts p
 WHERE p.post_type = 'post'
 AND p.post_status = 'publish'
-AND p.post_date < "2015-01-01"
+AND p.post_date < "2015-01-01" 
 LIMIT 10;
 `;
 
@@ -65,6 +65,7 @@ connection.query(query, (err, data) => {
     // extract subtitle from post content
     let subTitle = '';
     const postToDomElm = extractSubTitle(post.content);
+    const body = createArrofParagraphs(post.content);
 
     if (postToDomElm) {
       subTitle += postToDomElm.innerHTML;
@@ -73,7 +74,7 @@ connection.query(query, (err, data) => {
     const postObj = new Post(
       post.title,
       subTitle,
-      post.content,
+      body,
       post.meta_description,
       post.date,
       post.author,
