@@ -12,11 +12,11 @@ const extractSubTitle = (body) => {
 const formatDate = (date) => {
   const dateObj = new Date(date);
 
-  return `${dateObj.getMonth()}-${dateObj.getDay()}-${dateObj.getFullYear()}`;
+  return `${parseInt(dateObj.getMonth(), 10) + 1}-${dateObj.getDate()}-${dateObj.getFullYear()}`;
 };
 
 // create a doc file title
-const createDocTitle = (post, date) => `${post.replace(/[^\w\s]/gi, '').replace(/\s+/g, '-').toLowerCase()}-${formatDate(date)}`;
+const createDocTitle = (post, date) => `${formatDate(date)}-${post.replace(/[^\w\s]/gi, '').replace(/\s+/g, '-').toLowerCase()}`;
 
 // create an array of paragraphs based on string
 const createArrofParagraphs = (body) => {

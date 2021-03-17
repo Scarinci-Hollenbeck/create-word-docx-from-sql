@@ -50,10 +50,12 @@ SELECT meta_value
 FROM wp_posts p
 WHERE p.post_type = 'post'
 AND p.post_status = 'publish'
-AND p.post_date > "2011-01-01"
-AND p.post_date < "2012-01-01"
-LIMIT 5 
+AND p.post_date >= '2014-01-01 00:00:00'
+AND p.post_date <= '2015-01-01 00:00:00'
 `;
+
+// AND p.post_date >= ''
+// wp_posts.post_date >= '2016-09-09 15:19:39' AND wp_posts.post_date <= '2017-03-09 16:19:39'
 
 // describe
 connection.query(query, (error, data) => {
@@ -85,8 +87,10 @@ connection.query(query, (error, data) => {
     });
     return true;
   } catch (err) {
-    console.error(error);
-    return new Error(err);
+    return new Error({
+      err,
+      error,
+    });
   }
 });
 
