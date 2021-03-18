@@ -50,14 +50,11 @@ SELECT meta_value
 FROM wp_posts p
 WHERE p.post_type = 'post'
 AND p.post_status = 'publish'
-AND p.post_date >= '2014-01-01 00:00:00'
-AND p.post_date <= '2015-01-01 00:00:00'
+AND p.post_date >= '2020-01-01 00:00:00'
+AND p.post_date <= '2021-01-01 00:00:00'
 `;
 
-// AND p.post_date >= ''
-// wp_posts.post_date >= '2016-09-09 15:19:39' AND wp_posts.post_date <= '2017-03-09 16:19:39'
-
-// describe
+// execute the query
 connection.query(query, (error, data) => {
   try {
     // iterater through query results
